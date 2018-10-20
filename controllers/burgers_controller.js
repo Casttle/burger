@@ -3,39 +3,23 @@ const burger = require("../models/burger.js");
 
 const router = express.Router();
 
-
-// Create all our routes and set up logic within those routes where required.
 router.get("/", (req, res) => {
   burger.selectAll((data) => {
-    var hbsObject = {
-      burger: data
-    };
-    console.log(hbsObject);
-    res.render("index", hbsObject);
+  res.render("index",{ burger: data });
   });
 });
 
-router.post("/api/burger", function(req, res) {
-  burger.insertOne(["burger_name"], [req.body.burger_name], function(result) {
- 
-    res.json({ id: result.insertId });
+router.post("/burger/create", (req, res) => {
+  burger.insertOne(req.body.burger_name,(result) => {
+    console.log(result);
+    res.redirect("/");
   });
 });
 
-router.put("/api/burger/:id", function(req, res) {
-  var condition = "id = " + req.params.id;
-
-  console.log("condition", condition);
-
-  burger.updateOne({
-    devoured: req.body.devoured
-  }, condition, function(result) {
-    if (result.changedRows == 0) {
-      // If no rows were changed, then the ID must not exist, so 404
-      return res.status(404).end();
-    } else {
-      res.status(200).end();
-    }
+router.put("/burger/:id", (req, res) => {
+  burger.updateOne(req.params.id, (result) => {
+    console.log(result);
+      res.sendStatus(200);
   });
 });
 

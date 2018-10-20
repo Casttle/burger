@@ -8,14 +8,11 @@ var burger = {
     },
     // The variables cols and vals are arrays.
     insertOne: (burgerName, cb) => {
-      orm.insertOne("burgers", burgerName, (res) => {
-        cb(res);
-      });
+      orm.insertOne("burgers", burgerName, cb);
     },
-    updateOne: (condition, cb) => {
-      orm.updateOne("burgers", condition, (res) => {
-        cb(res);
-      });
+    updateOne: (id, cb) => {
+      var condition = `id=${id}`
+      orm.updateOne("burgers", {devoured: true}, condition, cb);
     }
 };
 

@@ -11,19 +11,19 @@ var orm = {
       });
     },
   insertOne: (table, burgerName, cb) => {
-      var queryString = `INSERT INTO ${table} (burger_name) VALUES( ${burgerName});`;
+      var queryString = `INSERT INTO ${table} (burger_name) VALUES (?)`;
       console.log(queryString);
-      connection.query(queryString, burgerName,(err, result) => {
+      connection.query(queryString, burgerName, (err, result) => {
         if (err) {
           throw err;
         }
         cb(result);
       });
     },
-  updateOne: (table, condition, cb) => {
-    var queryString = `UPDATE ${table} SET devoured = true WHERE ${condition} `;
+  updateOne: (table, devoured, condition, cb) => {
+    var queryString = `UPDATE ${table} SET ? WHERE ?`;
     console.log(queryString);
-    connection.query(queryString, function(err, result) {
+    connection.query(queryString, devoured, condition, (err, result) => {
       if (err) {
         throw err;
       }
